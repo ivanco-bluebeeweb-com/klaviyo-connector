@@ -1,0 +1,7090 @@
+{
+  "manifest_schema_version": 3,
+  "sdk_version": "5.9.22",
+  "app_id": "klaviyo-connector",
+  "version": "0.1.0",
+  "name": "Klaviyo Connector",
+  "description": "Email/SMS marketing automation via your own Klaviyo account -- profiles and consent, lists and segments, campaigns (email + SMS), flows, events and metrics, catalogs, coupons, reviews, templates, tags, and webhooks. Bring-your-own-account (BYOK): connect your own Klaviyo private API key, every call runs against your own account and your own sending quota.",
+  "icon": "icon.svg",
+  "actions_explicit": true,
+  "system": false,
+  "capabilities": [
+    "klaviyo:read",
+    "klaviyo:write"
+  ],
+  "tools": [
+    {
+      "name": "connect_klaviyo",
+      "description": "Connect Klaviyo by saving your own private API key, after checking it actually works. Get it from Klaviyo: Settings > API Keys > Create Private API Key.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "api_key": {
+            "description": "Klaviyo private API key (Settings > API Keys in your Klaviyo account). Verified against Klaviyo before being saved.",
+            "title": "Api Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "api_key"
+        ],
+        "title": "ConnectKlaviyoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connected": {
+            "default": false,
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "title": "ProviderConnection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "disconnect_klaviyo",
+      "description": "Disconnect Klaviyo: deletes the saved API key. Nothing in your Klaviyo account is changed -- lists, flows, campaigns, and profiles all stay exactly as they are; only this connector's access to them stops.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "description": "Explicit empty params model -- V17 disallows untyped handlers.",
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connected": {
+            "default": false,
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "title": "ProviderConnection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_klaviyo_connection",
+      "description": "Check whether Klaviyo is currently connected (does not reveal the saved API key).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "description": "Explicit empty params model -- V17 disallows untyped handlers.",
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "connected": {
+            "default": false,
+            "title": "Connected",
+            "type": "boolean"
+          },
+          "detail": {
+            "default": "",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "title": "ProviderConnection",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_klaviyo_account",
+      "description": "Read the connected Klaviyo account's own profile: contact email, timezone, public API key, and whether it's a test account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "description": "Explicit empty params model -- V17 disallows untyped handlers.",
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "contact_email": {
+            "default": "",
+            "title": "Contact Email",
+            "type": "string"
+          },
+          "timezone": {
+            "default": "",
+            "title": "Timezone",
+            "type": "string"
+          },
+          "public_api_key": {
+            "default": "",
+            "title": "Public Api Key",
+            "type": "string"
+          },
+          "test_account": {
+            "default": false,
+            "title": "Test Account",
+            "type": "boolean"
+          }
+        },
+        "title": "KlaviyoAccount",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_profile",
+      "description": "Create a new Klaviyo profile (contact) with email/phone/external_id plus optional name, organization, location, and custom properties.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "email": {
+            "default": "",
+            "description": "Profile email address (at least one of email/phone_number/external_id is required)",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "description": "Profile phone number in E.164 format, e.g. +15005550006",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "description": "Your own external identifier for this person, if you have one",
+            "title": "External Id",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "description": "First name",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "description": "Last name",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "organization": {
+            "default": "",
+            "description": "Company/organization name",
+            "title": "Organization",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "description": "Job title",
+            "title": "Title",
+            "type": "string"
+          },
+          "location_city": {
+            "default": "",
+            "description": "City",
+            "title": "Location City",
+            "type": "string"
+          },
+          "location_country": {
+            "default": "",
+            "description": "Country",
+            "title": "Location Country",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Arbitrary custom profile properties as key/value pairs",
+            "title": "Properties"
+          }
+        },
+        "title": "CreateProfileParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "email": {
+            "default": "",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "organization": {
+            "default": "",
+            "title": "Organization",
+            "type": "string"
+          },
+          "location_city": {
+            "default": "",
+            "title": "Location City",
+            "type": "string"
+          },
+          "location_country": {
+            "default": "",
+            "title": "Location Country",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "Properties"
+          }
+        },
+        "title": "Profile",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "update_profile",
+      "description": "Update an existing Klaviyo profile's email/phone/name/organization/title or merge custom properties. Only given fields change.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "profile_id": {
+            "description": "Klaviyo profile id, from list_profiles/get_profile",
+            "title": "Profile Id",
+            "type": "string"
+          },
+          "email": {
+            "default": "",
+            "description": "New email, if changing",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "description": "New phone number, if changing",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "description": "New first name, if changing",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "description": "New last name, if changing",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "organization": {
+            "default": "",
+            "description": "New organization, if changing",
+            "title": "Organization",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "description": "New job title, if changing",
+            "title": "Title",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties to merge into the profile",
+            "title": "Properties"
+          }
+        },
+        "required": [
+          "profile_id"
+        ],
+        "title": "UpdateProfileParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "email": {
+            "default": "",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "organization": {
+            "default": "",
+            "title": "Organization",
+            "type": "string"
+          },
+          "location_city": {
+            "default": "",
+            "title": "Location City",
+            "type": "string"
+          },
+          "location_country": {
+            "default": "",
+            "title": "Location Country",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "Properties"
+          }
+        },
+        "title": "Profile",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_profile",
+      "description": "Read one Klaviyo profile in full by its id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "profile_id": {
+            "description": "Klaviyo profile id",
+            "title": "Profile Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "profile_id"
+        ],
+        "title": "GetProfileParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "email": {
+            "default": "",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "organization": {
+            "default": "",
+            "title": "Organization",
+            "type": "string"
+          },
+          "location_city": {
+            "default": "",
+            "title": "Location City",
+            "type": "string"
+          },
+          "location_country": {
+            "default": "",
+            "title": "Location Country",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "Properties"
+          }
+        },
+        "title": "Profile",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_profiles",
+      "description": "List Klaviyo profiles, optionally filtered by exact email or phone number, with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "email": {
+            "default": "",
+            "description": "Filter to an exact email address",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "description": "Filter to an exact phone number",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor from a previous call's next_cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "description": "Results per page, 1-100",
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListProfilesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Profile": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "email": {
+                "default": "",
+                "title": "Email",
+                "type": "string"
+              },
+              "phone_number": {
+                "default": "",
+                "title": "Phone Number",
+                "type": "string"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              },
+              "first_name": {
+                "default": "",
+                "title": "First Name",
+                "type": "string"
+              },
+              "last_name": {
+                "default": "",
+                "title": "Last Name",
+                "type": "string"
+              },
+              "organization": {
+                "default": "",
+                "title": "Organization",
+                "type": "string"
+              },
+              "location_city": {
+                "default": "",
+                "title": "Location City",
+                "type": "string"
+              },
+              "location_country": {
+                "default": "",
+                "title": "Location Country",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "properties": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Properties"
+              }
+            },
+            "title": "Profile",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Profile"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ProfileList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "delete_profile",
+      "description": "Request deletion of a Klaviyo profile (data-privacy erasure request). This is queued by Klaviyo and cannot be undone once processed.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "profile_id": {
+            "description": "Klaviyo profile id -- this creates a permanent data-privacy deletion request, cannot be undone",
+            "title": "Profile Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "profile_id"
+        ],
+        "title": "DeleteProfileParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_list",
+      "description": "Create a new Klaviyo list (a static, explicit opt-in group you add/remove profiles from directly).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "name": {
+            "description": "List display name",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateListParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "profile_count": {
+            "default": 0,
+            "title": "Profile Count",
+            "type": "integer"
+          }
+        },
+        "title": "KlaviyoList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_lists",
+      "description": "List all Klaviyo lists with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListListsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "KlaviyoList": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "profile_count": {
+                "default": 0,
+                "title": "Profile Count",
+                "type": "integer"
+              }
+            },
+            "title": "KlaviyoList",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/KlaviyoList"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "KlaviyoListList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_list",
+      "description": "Read one Klaviyo list's details by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "list_id": {
+            "description": "Klaviyo list id",
+            "title": "List Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ],
+        "title": "ListIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "profile_count": {
+            "default": 0,
+            "title": "Profile Count",
+            "type": "integer"
+          }
+        },
+        "title": "KlaviyoList",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "delete_list",
+      "description": "Permanently delete a Klaviyo list. Profiles themselves are not deleted, only removed from this list.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "list_id": {
+            "description": "Klaviyo list id",
+            "title": "List Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ],
+        "title": "ListIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "add_profiles_to_list",
+      "description": "Add one or more existing profiles (by id) to a Klaviyo list.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "list_id": {
+            "description": "Klaviyo list id",
+            "title": "List Id",
+            "type": "string"
+          },
+          "profile_ids": {
+            "description": "Klaviyo profile ids to add/remove, 1-100 per call",
+            "items": {
+              "type": "string"
+            },
+            "title": "Profile Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "list_id",
+          "profile_ids"
+        ],
+        "title": "BulkProfileIdsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "profile_count": {
+            "default": 0,
+            "title": "Profile Count",
+            "type": "integer"
+          }
+        },
+        "title": "ListMembershipResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "remove_profiles_from_list",
+      "description": "Remove one or more profiles (by id) from a Klaviyo list.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "list_id": {
+            "description": "Klaviyo list id",
+            "title": "List Id",
+            "type": "string"
+          },
+          "profile_ids": {
+            "description": "Klaviyo profile ids to add/remove, 1-100 per call",
+            "items": {
+              "type": "string"
+            },
+            "title": "Profile Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "list_id",
+          "profile_ids"
+        ],
+        "title": "BulkProfileIdsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "profile_count": {
+            "default": 0,
+            "title": "Profile Count",
+            "type": "integer"
+          }
+        },
+        "title": "ListMembershipResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_list_members",
+      "description": "List the profiles that belong to one Klaviyo list, with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "list_id": {
+            "description": "Klaviyo list id",
+            "title": "List Id",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "list_id"
+        ],
+        "title": "ListMembersParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Profile": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "email": {
+                "default": "",
+                "title": "Email",
+                "type": "string"
+              },
+              "phone_number": {
+                "default": "",
+                "title": "Phone Number",
+                "type": "string"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              },
+              "first_name": {
+                "default": "",
+                "title": "First Name",
+                "type": "string"
+              },
+              "last_name": {
+                "default": "",
+                "title": "Last Name",
+                "type": "string"
+              },
+              "organization": {
+                "default": "",
+                "title": "Organization",
+                "type": "string"
+              },
+              "location_city": {
+                "default": "",
+                "title": "Location City",
+                "type": "string"
+              },
+              "location_country": {
+                "default": "",
+                "title": "Location Country",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "properties": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Properties"
+              }
+            },
+            "title": "Profile",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Profile"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ProfileList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_segments",
+      "description": "List Klaviyo segments (dynamic, condition-based groups computed by Klaviyo itself) with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListSegmentsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Segment": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "is_active": {
+                "default": true,
+                "title": "Is Active",
+                "type": "boolean"
+              },
+              "is_processing": {
+                "default": false,
+                "title": "Is Processing",
+                "type": "boolean"
+              },
+              "profile_count": {
+                "default": 0,
+                "title": "Profile Count",
+                "type": "integer"
+              }
+            },
+            "title": "Segment",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Segment"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "SegmentList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_segment",
+      "description": "Read one Klaviyo segment's details by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "segment_id": {
+            "description": "Klaviyo segment id",
+            "title": "Segment Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "segment_id"
+        ],
+        "title": "SegmentIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "is_active": {
+            "default": true,
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "is_processing": {
+            "default": false,
+            "title": "Is Processing",
+            "type": "boolean"
+          },
+          "profile_count": {
+            "default": 0,
+            "title": "Profile Count",
+            "type": "integer"
+          }
+        },
+        "title": "Segment",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_segment_members",
+      "description": "List the profiles currently matching one Klaviyo segment's conditions, with cursor pagination. Read-only -- you cannot add/remove members directly, only the underlying behavior/list membership that feeds the segment's own conditions.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "segment_id": {
+            "description": "Klaviyo segment id",
+            "title": "Segment Id",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "segment_id"
+        ],
+        "title": "ListSegmentMembersParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Profile": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "email": {
+                "default": "",
+                "title": "Email",
+                "type": "string"
+              },
+              "phone_number": {
+                "default": "",
+                "title": "Phone Number",
+                "type": "string"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              },
+              "first_name": {
+                "default": "",
+                "title": "First Name",
+                "type": "string"
+              },
+              "last_name": {
+                "default": "",
+                "title": "Last Name",
+                "type": "string"
+              },
+              "organization": {
+                "default": "",
+                "title": "Organization",
+                "type": "string"
+              },
+              "location_city": {
+                "default": "",
+                "title": "Location City",
+                "type": "string"
+              },
+              "location_country": {
+                "default": "",
+                "title": "Location Country",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "properties": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Properties"
+              }
+            },
+            "title": "Profile",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Profile"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ProfileList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_event",
+      "description": "Track a custom event for a profile (e.g. 'Placed Order', 'Viewed Product') with a numeric value and arbitrary properties. Creates the profile automatically if it doesn't exist yet, and creates the metric automatically the first time this event name is used.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "metric_name": {
+            "description": "Event/metric name, e.g. 'Viewed Product', 'Placed Order'",
+            "title": "Metric Name",
+            "type": "string"
+          },
+          "email": {
+            "default": "",
+            "description": "Profile email this event belongs to (email or phone_number or external_id required)",
+            "title": "Email",
+            "type": "string"
+          },
+          "phone_number": {
+            "default": "",
+            "description": "Profile phone number this event belongs to",
+            "title": "Phone Number",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "description": "Your own external id for the profile this event belongs to",
+            "title": "External Id",
+            "type": "string"
+          },
+          "value": {
+            "default": 0.0,
+            "description": "Numeric value of the event, e.g. order total",
+            "title": "Value",
+            "type": "number"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Arbitrary event properties as key/value pairs",
+            "title": "Properties"
+          },
+          "unique_id": {
+            "default": "",
+            "description": "Your own idempotency key for this event, to avoid duplicates on retry",
+            "title": "Unique Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "metric_name"
+        ],
+        "title": "CreateEventParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "metric_id": {
+            "default": "",
+            "title": "Metric Id",
+            "type": "string"
+          },
+          "profile_id": {
+            "default": "",
+            "title": "Profile Id",
+            "type": "string"
+          },
+          "value": {
+            "default": 0.0,
+            "title": "Value",
+            "type": "number"
+          },
+          "datetime": {
+            "default": "",
+            "title": "Datetime",
+            "type": "string"
+          }
+        },
+        "title": "KlaviyoEvent",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_events",
+      "description": "List recorded Klaviyo events, optionally filtered by metric id or profile id, with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "metric_id": {
+            "default": "",
+            "description": "Filter to events of one metric id, from list_metrics",
+            "title": "Metric Id",
+            "type": "string"
+          },
+          "profile_id": {
+            "default": "",
+            "description": "Filter to events belonging to one profile id",
+            "title": "Profile Id",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListEventsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "KlaviyoEvent": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "metric_id": {
+                "default": "",
+                "title": "Metric Id",
+                "type": "string"
+              },
+              "profile_id": {
+                "default": "",
+                "title": "Profile Id",
+                "type": "string"
+              },
+              "value": {
+                "default": 0.0,
+                "title": "Value",
+                "type": "number"
+              },
+              "datetime": {
+                "default": "",
+                "title": "Datetime",
+                "type": "string"
+              }
+            },
+            "title": "KlaviyoEvent",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/KlaviyoEvent"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "KlaviyoEventList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_metrics",
+      "description": "List all event-type metrics Klaviyo has recorded for this account (e.g. 'Placed Order', 'Opened Email'), with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListMetricsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Metric": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "integration_name": {
+                "default": "",
+                "title": "Integration Name",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              }
+            },
+            "title": "Metric",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Metric"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "MetricList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_campaigns",
+      "description": "List Klaviyo campaigns (one-off email or SMS sends), filtered by channel, with cursor pagination.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "channel": {
+            "default": "email",
+            "description": "Campaign channel: email or sms",
+            "title": "Channel",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListCampaignsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Campaign": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "channel": {
+                "default": "",
+                "title": "Channel",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              },
+              "send_time": {
+                "default": "",
+                "title": "Send Time",
+                "type": "string"
+              }
+            },
+            "title": "Campaign",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Campaign"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CampaignList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_campaign",
+      "description": "Read one Klaviyo campaign's details by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "campaign_id": {
+            "description": "Klaviyo campaign id",
+            "title": "Campaign Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "campaign_id"
+        ],
+        "title": "CampaignIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "channel": {
+            "default": "",
+            "title": "Channel",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "send_time": {
+            "default": "",
+            "title": "Send Time",
+            "type": "string"
+          }
+        },
+        "title": "Campaign",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_campaign",
+      "description": "Create a new Klaviyo email or SMS campaign targeting one or more lists/segments. Created in draft -- use send_campaign to actually send it, or schedule it from the Klaviyo UI.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "name": {
+            "description": "Internal campaign name",
+            "title": "Name",
+            "type": "string"
+          },
+          "channel": {
+            "default": "email",
+            "description": "Campaign channel: email or sms",
+            "title": "Channel",
+            "type": "string"
+          },
+          "list_ids": {
+            "description": "Klaviyo list ids to send to",
+            "items": {
+              "type": "string"
+            },
+            "title": "List Ids",
+            "type": "array"
+          },
+          "segment_ids": {
+            "description": "Klaviyo segment ids to also target",
+            "items": {
+              "type": "string"
+            },
+            "title": "Segment Ids",
+            "type": "array"
+          },
+          "subject": {
+            "default": "",
+            "description": "Email subject line (email channel only)",
+            "title": "Subject",
+            "type": "string"
+          },
+          "from_email": {
+            "default": "",
+            "description": "Sending email address (email channel only, must be a verified sending domain)",
+            "title": "From Email",
+            "type": "string"
+          },
+          "from_label": {
+            "default": "",
+            "description": "Sender display name (email channel only)",
+            "title": "From Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "list_ids"
+        ],
+        "title": "CreateCampaignParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "channel": {
+            "default": "",
+            "title": "Channel",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "send_time": {
+            "default": "",
+            "title": "Send Time",
+            "type": "string"
+          }
+        },
+        "title": "Campaign",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "send_campaign",
+      "description": "Send a Klaviyo campaign now. The campaign must already have content and an audience configured.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "campaign_id": {
+            "description": "Klaviyo campaign id to send immediately",
+            "title": "Campaign Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "campaign_id"
+        ],
+        "title": "SendCampaignParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "channel": {
+            "default": "",
+            "title": "Channel",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          },
+          "send_time": {
+            "default": "",
+            "title": "Send Time",
+            "type": "string"
+          }
+        },
+        "title": "Campaign",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_flows",
+      "description": "List Klaviyo flows (automated multi-step sequences triggered by events, segment membership, or dates).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListFlowsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Flow": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "trigger_type": {
+                "default": "",
+                "title": "Trigger Type",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              }
+            },
+            "title": "Flow",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Flow"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "FlowList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_flow",
+      "description": "Read one Klaviyo flow's details by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "flow_id": {
+            "description": "Klaviyo flow id",
+            "title": "Flow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "flow_id"
+        ],
+        "title": "FlowIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "trigger_type": {
+            "default": "",
+            "title": "Trigger Type",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "title": "Flow",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "set_flow_status",
+      "description": "Turn a Klaviyo flow live, or pause/draft it. status must be one of: live, draft, manual.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "flow_id": {
+            "description": "Klaviyo flow id",
+            "title": "Flow Id",
+            "type": "string"
+          },
+          "status": {
+            "description": "New status: live, draft, or manual",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "flow_id",
+          "status"
+        ],
+        "title": "SetFlowStatusParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "trigger_type": {
+            "default": "",
+            "title": "Trigger Type",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "title": "Flow",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_templates",
+      "description": "List reusable Klaviyo email templates.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListTemplatesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Template": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "created": {
+                "default": "",
+                "title": "Created",
+                "type": "string"
+              },
+              "updated": {
+                "default": "",
+                "title": "Updated",
+                "type": "string"
+              }
+            },
+            "title": "Template",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Template"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "TemplateList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_template",
+      "description": "Read one Klaviyo email template's HTML by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "template_id": {
+            "description": "Klaviyo template id",
+            "title": "Template Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "template_id"
+        ],
+        "title": "TemplateIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "title": "Template",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_template",
+      "description": "Create a new reusable Klaviyo email template from raw HTML.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "name": {
+            "description": "Template name",
+            "title": "Name",
+            "type": "string"
+          },
+          "html": {
+            "description": "Full HTML content of the email template",
+            "title": "Html",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "html"
+        ],
+        "title": "CreateTemplateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "created": {
+            "default": "",
+            "title": "Created",
+            "type": "string"
+          },
+          "updated": {
+            "default": "",
+            "title": "Updated",
+            "type": "string"
+          }
+        },
+        "title": "Template",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_tags",
+      "description": "List tags defined on this Klaviyo account -- organizing labels attachable to campaigns/flows/lists/segments.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListTagsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Tag": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "title": "Tag",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Tag"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "TagList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_tag",
+      "description": "Create a new Klaviyo tag.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "name": {
+            "description": "Tag name",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateTagParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "title": "Tag",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "tag_resource",
+      "description": "Attach an existing tag to a campaign, flow, list, or segment by id.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "tag_id": {
+            "description": "Klaviyo tag id",
+            "title": "Tag Id",
+            "type": "string"
+          },
+          "resource_type": {
+            "description": "Resource type to tag: campaign, flow, list, or segment",
+            "title": "Resource Type",
+            "type": "string"
+          },
+          "resource_id": {
+            "description": "Id of the campaign/flow/list/segment to tag",
+            "title": "Resource Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tag_id",
+          "resource_type",
+          "resource_id"
+        ],
+        "title": "TagResourceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "title": "Tag",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_catalog_items",
+      "description": "List items in Klaviyo's product catalog -- products that can be rendered into dynamic email/SMS blocks (recommendations, browse abandonment, etc).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListCatalogItemsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "CatalogItem": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "default": "",
+                "title": "Url",
+                "type": "string"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              },
+              "integration_type": {
+                "default": "",
+                "title": "Integration Type",
+                "type": "string"
+              },
+              "catalog_type": {
+                "default": "",
+                "title": "Catalog Type",
+                "type": "string"
+              },
+              "image_full_url": {
+                "default": "",
+                "title": "Image Full Url",
+                "type": "string"
+              },
+              "price": {
+                "default": 0.0,
+                "title": "Price",
+                "type": "number"
+              },
+              "published": {
+                "default": true,
+                "title": "Published",
+                "type": "boolean"
+              }
+            },
+            "title": "CatalogItem",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/CatalogItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CatalogItemList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "get_catalog_item",
+      "description": "Read one Klaviyo catalog item in full.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "item_id": {
+            "description": "Klaviyo catalog item id (composite id like '$default:::<external_id>')",
+            "title": "Item Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_id"
+        ],
+        "title": "CatalogItemIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "default": "",
+            "title": "Url",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "integration_type": {
+            "default": "",
+            "title": "Integration Type",
+            "type": "string"
+          },
+          "catalog_type": {
+            "default": "",
+            "title": "Catalog Type",
+            "type": "string"
+          },
+          "image_full_url": {
+            "default": "",
+            "title": "Image Full Url",
+            "type": "string"
+          },
+          "price": {
+            "default": 0.0,
+            "title": "Price",
+            "type": "number"
+          },
+          "published": {
+            "default": true,
+            "title": "Published",
+            "type": "boolean"
+          }
+        },
+        "title": "CatalogItem",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_catalog_item",
+      "description": "Create a product in Klaviyo's catalog so it can be used in dynamic email/SMS blocks and recommendations.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "external_id": {
+            "description": "Your own product id in your source system (SKU or similar)",
+            "title": "External Id",
+            "type": "string"
+          },
+          "title": {
+            "description": "Product title",
+            "title": "Title",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "description": "Product description",
+            "title": "Description",
+            "type": "string"
+          },
+          "url": {
+            "default": "",
+            "description": "Public product page URL",
+            "title": "Url",
+            "type": "string"
+          },
+          "image_full_url": {
+            "default": "",
+            "description": "Full-size product image URL",
+            "title": "Image Full Url",
+            "type": "string"
+          },
+          "price": {
+            "default": 0.0,
+            "description": "Product price",
+            "title": "Price",
+            "type": "number"
+          },
+          "published": {
+            "default": true,
+            "description": "Whether the item is published/visible",
+            "title": "Published",
+            "type": "boolean"
+          },
+          "catalog_type": {
+            "default": "$default",
+            "description": "Klaviyo catalog integration type, '$default' unless using a custom feed",
+            "title": "Catalog Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "external_id",
+          "title"
+        ],
+        "title": "CreateCatalogItemParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "default": "",
+            "title": "Url",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "integration_type": {
+            "default": "",
+            "title": "Integration Type",
+            "type": "string"
+          },
+          "catalog_type": {
+            "default": "",
+            "title": "Catalog Type",
+            "type": "string"
+          },
+          "image_full_url": {
+            "default": "",
+            "title": "Image Full Url",
+            "type": "string"
+          },
+          "price": {
+            "default": 0.0,
+            "title": "Price",
+            "type": "number"
+          },
+          "published": {
+            "default": true,
+            "title": "Published",
+            "type": "boolean"
+          }
+        },
+        "title": "CatalogItem",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "update_catalog_item",
+      "description": "Update selected fields of an existing Klaviyo catalog item (price, title, published state, etc).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "item_id": {
+            "description": "Klaviyo catalog item id (composite id like '$custom:::<external_id>')",
+            "title": "Item Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "description": "New product title, empty to leave unchanged",
+            "title": "Title",
+            "type": "string"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New price, None to leave unchanged",
+            "title": "Price"
+          },
+          "url": {
+            "default": "",
+            "description": "New public product page URL, empty to leave unchanged",
+            "title": "Url",
+            "type": "string"
+          },
+          "image_full_url": {
+            "default": "",
+            "description": "New full-size product image URL, empty to leave unchanged",
+            "title": "Image Full Url",
+            "type": "string"
+          },
+          "published": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New published state, None to leave unchanged",
+            "title": "Published"
+          }
+        },
+        "required": [
+          "item_id"
+        ],
+        "title": "UpdateCatalogItemParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "default": "",
+            "title": "Url",
+            "type": "string"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          },
+          "integration_type": {
+            "default": "",
+            "title": "Integration Type",
+            "type": "string"
+          },
+          "catalog_type": {
+            "default": "",
+            "title": "Catalog Type",
+            "type": "string"
+          },
+          "image_full_url": {
+            "default": "",
+            "title": "Image Full Url",
+            "type": "string"
+          },
+          "price": {
+            "default": 0.0,
+            "title": "Price",
+            "type": "number"
+          },
+          "published": {
+            "default": true,
+            "title": "Published",
+            "type": "boolean"
+          }
+        },
+        "title": "CatalogItem",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "delete_catalog_item",
+      "description": "Permanently delete a product from Klaviyo's catalog.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "item_id": {
+            "description": "Klaviyo catalog item id (composite id like '$default:::<external_id>')",
+            "title": "Item Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_id"
+        ],
+        "title": "CatalogItemIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_catalog_categories",
+      "description": "List categories in Klaviyo's product catalog.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListCatalogCategoriesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "CatalogCategory": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              }
+            },
+            "title": "CatalogCategory",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/CatalogCategory"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CatalogCategoryList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_coupons",
+      "description": "List discount coupons (the reusable discount definition, not individual codes) configured in Klaviyo.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "title": "ListCouponsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Coupon": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "default": "",
+                "title": "Description",
+                "type": "string"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "external_id": {
+                "default": "",
+                "title": "External Id",
+                "type": "string"
+              }
+            },
+            "title": "Coupon",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Coupon"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CouponList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_coupon",
+      "description": "Create a discount coupon definition in Klaviyo (the template a coupon code is issued under).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "external_id": {
+            "description": "Your own coupon identifier",
+            "title": "External Id",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "description": "Internal description",
+            "title": "Description",
+            "type": "string"
+          }
+        },
+        "required": [
+          "external_id"
+        ],
+        "title": "CreateCouponParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "external_id": {
+            "default": "",
+            "title": "External Id",
+            "type": "string"
+          }
+        },
+        "title": "Coupon",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "delete_coupon",
+      "description": "Permanently delete a coupon definition from Klaviyo.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "coupon_id": {
+            "description": "Klaviyo coupon id",
+            "title": "Coupon Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "coupon_id"
+        ],
+        "title": "CouponIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_coupon_codes",
+      "description": "List individual redeemable codes issued under a Klaviyo coupon.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "coupon_id": {
+            "description": "Klaviyo coupon id to list issued codes for",
+            "title": "Coupon Id",
+            "type": "string"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor, empty for first page",
+            "title": "Cursor",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Page Size",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "coupon_id"
+        ],
+        "title": "ListCouponCodesParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "CouponCode": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "default": "",
+                "title": "Status",
+                "type": "string"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "unique_code": {
+                "default": "",
+                "title": "Unique Code",
+                "type": "string"
+              },
+              "expires_at": {
+                "default": "",
+                "title": "Expires At",
+                "type": "string"
+              }
+            },
+            "title": "CouponCode",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/CouponCode"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "default": "",
+            "title": "Next Cursor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CouponCodeList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_coupon_code",
+      "description": "Issue a new redeemable code under an existing Klaviyo coupon, optionally with an expiry date.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "coupon_id": {
+            "description": "Klaviyo coupon id from create_coupon",
+            "title": "Coupon Id",
+            "type": "string"
+          },
+          "unique_code": {
+            "description": "The actual redeemable code, e.g. 'SAVE20-AB12CD'",
+            "title": "Unique Code",
+            "type": "string"
+          },
+          "expires_at": {
+            "default": "",
+            "description": "ISO 8601 expiry datetime, empty for no expiry",
+            "title": "Expires At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "coupon_id",
+          "unique_code"
+        ],
+        "title": "CreateCouponCodeParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "default": "",
+            "title": "Status",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "unique_code": {
+            "default": "",
+            "title": "Unique Code",
+            "type": "string"
+          },
+          "expires_at": {
+            "default": "",
+            "title": "Expires At",
+            "type": "string"
+          }
+        },
+        "title": "CouponCode",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_webhook_topics",
+      "description": "List the event topics Klaviyo can notify a webhook about (e.g. campaign.sent, profile.created).",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {},
+        "title": "ListWebhookTopicsParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "WebhookTopic": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              }
+            },
+            "title": "WebhookTopic",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/WebhookTopic"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "WebhookTopicList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "list_webhooks",
+      "description": "List webhook subscriptions configured on this Klaviyo account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {},
+        "title": "ListWebhooksParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "Webhook": {
+            "properties": {
+              "id": {
+                "default": "",
+                "title": "Id",
+                "type": "string"
+              },
+              "title": {
+                "default": "",
+                "title": "Title",
+                "type": "string"
+              },
+              "kind": {
+                "default": "",
+                "title": "Kind",
+                "type": "string"
+              },
+              "subtitle": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Subtitle"
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Description"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Status"
+              },
+              "url": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Url"
+              },
+              "name": {
+                "default": "",
+                "title": "Name",
+                "type": "string"
+              },
+              "endpoint_url": {
+                "default": "",
+                "title": "Endpoint Url",
+                "type": "string"
+              },
+              "topics": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Topics",
+                "type": "array"
+              }
+            },
+            "title": "Webhook",
+            "type": "object",
+            "x-sdl": "entity"
+          }
+        },
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Webhook"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "has_more": {
+            "default": false,
+            "title": "Has More",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "WebhookList",
+        "type": "object",
+        "x-sdl": "entity-list"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "create_webhook",
+      "description": "Create a webhook subscription: Klaviyo will POST to your endpoint_url when any of the given topics occur.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "name": {
+            "description": "Webhook display name",
+            "title": "Name",
+            "type": "string"
+          },
+          "endpoint_url": {
+            "description": "Your https:// URL Klaviyo will POST events to",
+            "title": "Endpoint Url",
+            "type": "string"
+          },
+          "topics": {
+            "description": "Event topics to subscribe to, e.g. ['profile.created','order.placed']",
+            "items": {
+              "type": "string"
+            },
+            "title": "Topics",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "endpoint_url",
+          "topics"
+        ],
+        "title": "CreateWebhookParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "endpoint_url": {
+            "default": "",
+            "title": "Endpoint Url",
+            "type": "string"
+          },
+          "topics": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Topics",
+            "type": "array"
+          }
+        },
+        "title": "Webhook",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    },
+    {
+      "name": "delete_webhook",
+      "description": "Permanently remove a Klaviyo webhook subscription.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "webhook_id": {
+            "description": "Klaviyo webhook id",
+            "title": "Webhook Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "webhook_id"
+        ],
+        "title": "WebhookIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "id": {
+            "default": "",
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "default": "",
+            "title": "Title",
+            "type": "string"
+          },
+          "kind": {
+            "default": "",
+            "title": "Kind",
+            "type": "string"
+          },
+          "subtitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Url"
+          },
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResult",
+        "type": "object",
+        "x-sdl": "entity"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "klaviyo-connector"
+    }
+  ],
+  "signals": [],
+  "schedules": [],
+  "required_scopes": [],
+  "icon_size_bytes": 273,
+  "lifecycle": {
+    "on_install": true,
+    "health_check": {
+      "interval_sec": 60
+    }
+  },
+  "lifecycle_hooks": {
+    "on_install": {
+      "signature": "(ctx)"
+    }
+  },
+  "secrets": [
+    {
+      "name": "klaviyo_api_key",
+      "description": "Your Klaviyo private API key, from Klaviyo Account > Settings > API Keys > Create Private API Key. Needs read/write scopes for the resources you want this connector to manage (profiles, lists, campaigns, etc.) -- Klaviyo's own key-scoping screen lets you pick exactly which ones.",
+      "required": false,
+      "write_mode": "both",
+      "max_bytes": 4096,
+      "scope": "user"
+    }
+  ],
+  "panels": [
+    {
+      "panel_id": "secrets",
+      "slot": "right",
+      "title": "Secrets",
+      "tree": {},
+      "icon": "KeyRound",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "klaviyo_overview",
+      "slot": "right",
+      "title": "Klaviyo",
+      "tree": {},
+      "icon": "✉️",
+      "refresh": "manual",
+      "center_overlay": false,
+      "default_width": 300,
+      "min_width": 240,
+      "max_width": 420
+    }
+  ]
+}
