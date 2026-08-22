@@ -1,5 +1,17 @@
 # Pricing History — Klaviyo Connector
 
+## 2026-08-22 — повторное подтверждение цены (suspend → update_pricing → deploy → submit_for_review)
+
+Тот же паттерн, что и на Salesforce/HubSpot/Webflow/MuleSoft в этой же
+сессии: `suspend_app` (было live) → первый `update_pricing` вернул
+`'connect_klaviyo'/'disconnect_klaviyo'/'get_klaviyo_connection'
+unexpectedly still priced` (расхождение только по free_tools) →
+немедленный повтор с тем же payload прошёл без ошибки. Задокументировано
+как задача #2275. `deploy_app` вернул 17/20 (ниже, чем у остальных
+коннекторов в этой партии, но тот же класс "warning", не "error" —
+локальный `imperal validate` при этом дал 0 проблем). `submit_for_review`
+→ `pending_review`.
+
 Обязательный журнал: каждое выставление или изменение цен на функции этого
 приложения фиксируется здесь — что изменилось, почему, и на основании
 чего. Не переписывать прошлые записи — только дописывать новые сверху.
