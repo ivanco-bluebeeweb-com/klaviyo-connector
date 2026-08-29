@@ -41,7 +41,6 @@ def _connect_section(connected: bool, detail: str) -> ui.UINode:
         ui.Form(
             action="connect_klaviyo",
             submit_label="Verify and connect",
-            full_width=True,
             children=[
                 ui.Stack(direction="v", gap=1, align="stretch", children=[
                     ui.Text("Private API key", variant="caption"),
