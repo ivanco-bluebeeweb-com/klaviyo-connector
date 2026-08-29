@@ -1,6 +1,6 @@
 {
   "manifest_schema_version": 3,
-  "sdk_version": "5.9.22",
+  "sdk_version": "5.11.0",
   "app_id": "klaviyo-connector",
   "version": "0.1.0",
   "name": "Klaviyo Connector",
@@ -7076,15 +7076,30 @@
     },
     {
       "panel_id": "klaviyo_overview",
-      "slot": "right",
+      "slot": "left",
       "title": "Klaviyo",
       "tree": {},
       "icon": "✉️",
       "refresh": "manual",
-      "center_overlay": false,
-      "default_width": 300,
-      "min_width": 240,
-      "max_width": 420
+      "center_overlay": false
+    },
+    {
+      "panel_id": "klaviyo_center",
+      "slot": "center",
+      "title": "Klaviyo",
+      "tree": {},
+      "icon": "✉️",
+      "refresh": "manual",
+      "center_overlay": true
+    },
+    {
+      "panel_id": "klaviyo_settings",
+      "slot": "center",
+      "title": "Klaviyo settings",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": true
     }
   ],
   "pricing": {

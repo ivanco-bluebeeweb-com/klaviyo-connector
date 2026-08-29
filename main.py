@@ -15,7 +15,7 @@ if _EXT_DIR not in sys.path:
 _LOCAL = (
     "app", "models", "klaviyo_client", "accounts",
     "handlers_profiles", "handlers_events", "handlers_campaigns",
-    "handlers_catalog", "panels",
+    "handlers_catalog", "panels", "panels_settings",
 )
 for _mod in _LOCAL:
     sys.modules.pop(_mod, None)
@@ -27,3 +27,4 @@ import handlers_events  # noqa: E402,F401
 import handlers_campaigns  # noqa: E402,F401
 import handlers_catalog  # noqa: E402,F401
 import panels  # noqa: E402,F401
+import panels_settings  # noqa: E402,F401
