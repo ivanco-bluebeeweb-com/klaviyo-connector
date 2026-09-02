@@ -110,10 +110,15 @@ async def request(
     url = f"{BASE_URL}{path}"
     headers = _headers(api_key)
     method_fn = getattr(ctx.http, method.lower())
+    kwargs: dict[str, Any] = {"headers": headers}
+    if params:
+        kwargs["params"] = params
+    if json_body is not None:
+        kwargs["json"] = json_body
     attempts = 0
     while True:
         try:
-            resp = await method_fn(url, headers=headers, params=params, json=json_body)
+            resp = await method_fn(url, **kwargs)
         except Exception as exc:  # pragma: no cover -- network/transport failure
             raise KlaviyoError(0, f"Network error calling Klaviyo: {exc}") from exc
 
