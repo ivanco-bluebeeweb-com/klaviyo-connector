@@ -38,13 +38,16 @@ def _connect_section(connected: bool, detail: str) -> ui.UINode:
             variant="caption",
         ),
         ui.Link(label="Open klaviyo.com", href="https://www.klaviyo.com/"),
+        ui.Button("Connect Klaviyo (OAuth 2.0)", variant="primary", size="sm", icon="login"),
+        ui.Divider(),
+        ui.Text("Or connect via Private API Key", variant="caption"),
         ui.Form(
             action="connect_klaviyo",
             submit_label="Verify and connect",
             children=[
                 ui.Stack(direction="v", gap=1, align="stretch", children=[
                     ui.Text("Private API key", variant="caption"),
-                    ui.Password(param_name="api_key", placeholder="pk_...", full_width=True),
+                    ui.Password(param_name="api_key", placeholder="pk_..."),
                 ]),
             ],
         ),
@@ -74,8 +77,7 @@ async def _quick_counts(ctx) -> list[dict]:
 
 def _settings_button() -> ui.UINode:
     return ui.Button(
-        "App settings", variant="secondary", size="sm", full_width=True,
-        icon="settings", on_click=ui.Call("__panel__klaviyo_settings"),
+        "App settings", variant="secondary", size="sm", icon="settings", on_click=ui.Call("__panel__klaviyo_settings"),
     )
 
 
@@ -108,8 +110,7 @@ async def klaviyo_overview_panel(ctx, **kwargs) -> object:
         ui.Text("Account overview", variant="subtitle"),
         ui.KeyValue(columns=2, items=counts) if counts else ui.Text("Unable to load counts.", variant="caption"),
         ui.Divider(),
-        ui.Button("View campaigns & flows", variant="primary", size="sm", full_width=True,
-                  icon="Mail", on_click=ui.Call("__panel__klaviyo_center")),
+        ui.Button("View campaigns & flows", variant="primary", size="sm", icon="Mail", on_click=ui.Call("__panel__klaviyo_center")),
         ui.Divider(),
         _settings_button(),
     ])
